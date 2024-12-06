@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as _ from 'lodash';
 
 export function util(param: any) {

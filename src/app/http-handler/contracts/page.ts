@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IApi, ServerPageInput } from './api';
 import { Filters } from './filters';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -27,12 +28,12 @@ export class PageOptions<TModel> {
 
 export class PageModel<TModel> {
   pageNo = 1;
-  pageSize: number = 10;
+  pageSize = 10;
   total = 0;
   totalPage = 0;
   offset = 0;
   totalRecords = 0;
-  items: Array<TModel> = [];
+  items: TModel[] = [];
   stats: any;
 }
 export interface IPage {
@@ -119,7 +120,7 @@ export class Page<TModel> extends PageModel<TModel> implements IPage {
         const items: TModel[] = [];
         page.data = page.data ? page.data : page.items;
 
-        _(page.data).each((item) => {
+        _(page.data).each((item: any) => {
           if (this.options.formatter) {
             item = this.options.formatter(item);
           }
@@ -175,13 +176,13 @@ export class Page<TModel> extends PageModel<TModel> implements IPage {
   };
 
   remove(item: TModel): void {
-    let data: any = item;
-    let idField: any = this.options?.fields?.id;
-    let id = data[idField];
+    const data: any = item;
+    const idField: any = this.options?.fields?.id;
+    const id = data[idField];
     let found = false;
     if (this.items && this.items.length) {
       let i: any = this.items.length;
-      let items: any = this.items;
+      const items: any = this.items;
       while (i--) {
         if (items[i] && items[i][idField] === id) {
           this.items.splice(i, 1);

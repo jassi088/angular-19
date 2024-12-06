@@ -30,15 +30,7 @@ module.exports = tseslint.config(
           style: "kebab-case",
         },
       ],
-      // "@typescript-eslint/naming-convention": [
-      //   "error",
-      //   {
-      //     selector: "variable",
-      //     format: ["camelCase", "UPPER_CASE"],
-      //     leadingUnderscore: "allow",
-      //     trailingUnderscore: "allow",
-      //   },
-      // ],
+      "@angular-eslint/prefer-standalone": "off",
       "@typescript-eslint/no-empty-function": "off",
     },
   },

@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IApi, ServerPageInput } from './api';
-import * as _ from 'lodash';
 
 export interface ModelOptions<TModel> {
   api: IApi<TModel>;

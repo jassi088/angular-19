@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IPage } from './page';
 import { util, dateUtil } from '../helpers';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Location } from '@angular/common';
 import { HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -135,8 +136,8 @@ export class Filters {
 
 
     // let httpParams = this.location ? (new HttpParams({ fromString: this.location.path().split('?')[1] })) : new HttpParams();
-    let httpParams = new HttpParams();
-    let routeParams: any = {};
+    const httpParams = new HttpParams();
+    const routeParams: any = {};
 
     let paramsString = '?';
 
@@ -156,7 +157,7 @@ export class Filters {
     });
 
     if (this.options.asyncWithLocation) {
-      let url = this.location.path().split('?')[0];
+      const url = this.location.path().split('?')[0];
       if (this.options.router) {
         this.options.router.navigate([], { queryParams: routeParams });
       } else
@@ -169,7 +170,7 @@ export class Filters {
   }
 
   asyncWithQueryParams() {
-    let url = decodeURIComponent(this.location.path().split('?')[1])?.replace('?', '');
+    const url = decodeURIComponent(this.location.path().split('?')[1])?.replace('?', '');
     if (url) {
       _.each(url.split('&'), (item) => {
         const [field, value] = item.split('=');

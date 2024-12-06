@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   env: 'dev',
   apiUrls: {
-    api: 'https://seb.codingcopz.in',
+    api: '',
   },
 };
 

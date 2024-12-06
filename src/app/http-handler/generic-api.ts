@@ -1,23 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { firstValueFrom } from 'rxjs';
 import {
   IApi,
   ServerDataModel,
   ServerPageInput,
   ServerPageModel,
 } from './contracts/api';
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { IGetParams } from './contracts/api/get-params.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { Subscription } from 'rxjs';
-declare let Reflect: any;
 
 export class GenericApi<TModel> implements IApi<TModel> {
   private rootUrl: string;
 
-  get(id: string): Promise<TModel> {
-    return this.http
-      .get<ServerDataModel<TModel>>(`${this.rootUrl}/${this.key}/${id}`)
-      .toPromise()
+  async get(id: string): Promise<TModel> {
+    return firstValueFrom(
+      this.http.get<ServerDataModel<TModel>>(`${this.rootUrl}/${this.key}/${id}`)
+    )
       .then((response) => {
         if (!response?.isSuccess) {
           return this.handleError(
@@ -29,8 +30,8 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  simpleGet(input?: IGetParams): Promise<TModel> {
-    let url: string = `${this.rootUrl}/${this.key}`;
+  async simpleGet(input?: IGetParams): Promise<TModel> {
+    let url = `${this.rootUrl}/${this.key}`;
     let parms: HttpParams | null = null;
 
     if (input) {
@@ -41,9 +42,9 @@ export class GenericApi<TModel> implements IApi<TModel> {
       url = input.path ? `${url}/${input.path}` : url;
       if (input.api) url = input.api;
     }
-    return this.http
-      .get<ServerDataModel<TModel>>(url, { params: parms as any })
-      .toPromise()
+    return firstValueFrom(
+      this.http.get<ServerDataModel<TModel>>(url, { params: parms as any })
+    )
       .then((response) => {
         if (!response?.isSuccess) {
           return this.handleError(
@@ -54,11 +55,12 @@ export class GenericApi<TModel> implements IApi<TModel> {
       })
       .catch(this.handleError);
   }
+
   search(
     input: ServerPageInput,
     subscriptionCallBack: (s: Subscription) => any
   ): Promise<ServerPageModel<TModel>> {
-    let parms: HttpParams = this.getQueryParams(input);
+    const parms: HttpParams = this.getQueryParams(input);
     const observable = this.http.get<ServerPageModel<TModel>>(
       `${this.rootUrl}/${this.key}`,
       { params: parms }
@@ -81,16 +83,16 @@ export class GenericApi<TModel> implements IApi<TModel> {
     });
   }
 
-  create(model: TModel, path?: string, api?: string): Promise<TModel> {
-    let url: string = `${this.rootUrl}/${this.key}`;
+  async create(model: TModel, path?: string, api?: string): Promise<TModel> {
+    let url = `${this.rootUrl}/${this.key}`;
     url = path ? `${url}/${path}` : url;
     if (api) {
       url = `${this.rootUrl}/${api}`;
     }
 
-    return this.http
-      .post<ServerDataModel<TModel>>(url, model)
-      .toPromise()
+    return firstValueFrom(
+      this.http.post<ServerDataModel<TModel>>(url, model)
+    )
       .then((response) => {
         if (!response?.isSuccess) {
           return this.handleError(
@@ -102,71 +104,38 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  exportReport(
+  async exportReport(
     input: ServerPageInput,
     path: string | null = null,
-    reportName: string = 'downloaded_file'
+    reportName = 'downloaded_file'
   ): Promise<any> {
-    let parms: HttpParams = this.getQueryParams(input);
-    let apiPath: string = path
+    const parms: HttpParams = this.getQueryParams(input);
+    const apiPath: string = path
       ? `${this.rootUrl}/${path}`
       : `${this.rootUrl}/${this.key}`;
 
-    return this.http
-      .get<Blob>(apiPath, { params: parms, responseType: 'blob' as 'json' })
-      .toPromise()
+    return firstValueFrom(
+      this.http.get<Blob>(apiPath, { params: parms, responseType: 'blob' as 'json' })
+    )
       .then((resposne) => {
-        // const url = window.URL.createObjectURL(resposne);
-
-        // const link = this.downloadZipLink.nativeElement;
-        // link.href = url;
-        // link.download = 'archive.zip';
-        // link.click();
-
-        // window.URL.revokeObjectURL(url);
-        // let contentType = resposne.headers.get("content-type") || 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-
-        // // get the headers' content disposition
-        // let cd = resposne.headers.get("content-disposition") || resposne.headers.get("Content-Disposition");
-
-        // // get the file name with regex
-        // let regex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-        // let match = regex.exec(cd);
-
-        // // is there a fiel name?
-        // let fileName = match && match[1] || "report";
-        // if (reportName)
-        //   fileName = reportName;
-
-        // // replace leading and trailing slashes that C# added to your file name
-        // fileName = fileName.replace(/\"/g, "");
-
-        // let blob = new Blob([resposne['_body']], { type: contentType });
-        let blob: any = resposne;
-        // if (navigator.msSaveBlob) {
-        //   navigator.msSaveBlob(blob, reportName);
-        // }
-        //  else {
-        let objectUrl = window.URL.createObjectURL(blob);
-        // window.open(objectUrl);
-        let a = document.createElement('a');
+        const blob: any = resposne;
+        const objectUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
         a.href = objectUrl;
         a.download = reportName;
         a.click();
         URL.revokeObjectURL(objectUrl);
         document.body.appendChild(a);
         document.body.removeChild(a);
-        // }
-
         return true;
       })
       .catch(this.handleError);
   }
 
-  simpePost(model: any): Promise<any> {
-    return this.http
-      .post<ServerDataModel<any>>(`${this.rootUrl}/${this.key}`, model)
-      .toPromise()
+  async simplePost(model: any): Promise<any> {
+    return firstValueFrom(
+      this.http.post<ServerDataModel<any>>(`${this.rootUrl}/${this.key}`, model)
+    )
       .then((response) => {
         if (!response?.isSuccess) {
           return this.handleError(
@@ -178,7 +147,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  update(
+  async update(
     id: string,
     model: TModel,
     input?: ServerPageInput,
@@ -195,9 +164,9 @@ export class GenericApi<TModel> implements IApi<TModel> {
     if (api) {
       url = `${this.rootUrl}/${api}`;
     }
-    return this.http
-      .put<ServerDataModel<TModel>>(url, model, { params: parms })
-      .toPromise()
+    return firstValueFrom(
+      this.http.put<ServerDataModel<TModel>>(url, model, { params: parms })
+    )
       .then((response) => {
         if (!response?.isSuccess) {
           return this.handleError(
@@ -209,10 +178,10 @@ export class GenericApi<TModel> implements IApi<TModel> {
       .catch(this.handleError);
   }
 
-  remove(id: string): Promise<TModel> {
-    return this.http
-      .delete<ServerDataModel<TModel>>(`${this.rootUrl}/${this.key}/${id}`)
-      .toPromise()
+  async remove(id: string): Promise<TModel> {
+    return firstValueFrom(
+      this.http.delete<ServerDataModel<TModel>>(`${this.rootUrl}/${this.key}/${id}`)
+    )
       .then((response) => {
         if (!response?.isSuccess) {
           return this.handleError(
@@ -232,8 +201,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
       if (error.status === 403) {
         localStorage.clear();
         window.location.href = '/';
-        // return null;
-        return Promise.reject<string>('Your are logged Out');
+        return Promise.reject<string>('You are logged out');
       }
       return Promise.reject<string>(error.statusText);
     }
@@ -250,7 +218,7 @@ export class GenericApi<TModel> implements IApi<TModel> {
   private getQueryParams(input: ServerPageInput | null = null): HttpParams {
     let params: HttpParams = new HttpParams();
     if (input) {
-      _.each(input, (value: any, key: string, obj: Object) => {
+      _.each(input, (value: any, key: string) => {
         if (key === 'query') {
           _.each(value, (keyVal: any, keyKey: string) => {
             if (keyVal) {
