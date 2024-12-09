@@ -5,10 +5,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   templateUrl: './dialog.component.html',
 })
 export class DialogComponent {
-  @Input() data: any;
-  @Output() close = new EventEmitter<any>();
+  @Input() data: unknown;
+  @Output() close = new EventEmitter<unknown>();
 
-  closeDialog(result?: any): void {
+  closeDialog(result?: unknown): void {
     this.close.emit(result);
   }
 }

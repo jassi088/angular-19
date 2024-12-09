@@ -1,25 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
-import { AuthComponent } from './auth.component';
-import { AuthRoutes } from './auth.routing';
-import { LoginComponent } from './login/login.component';
+import { DashboardRoutes } from './dashboard.routing';
+import { DashboardComponent } from './dashboard.component';
 import { ComponentsModule } from '@app/components/components.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AuthComponent,
-    LoginComponent,
+    DashboardComponent,
   ],
   imports: [
     CommonModule,
     ComponentsModule,
+    FormsModule,
     ReactiveFormsModule,
-    AuthRoutes,
+    DashboardRoutes,
   ],
   providers: [
     provideHttpClient(),
   ],
 })
-export class AuthModule { }
+export class DashboardModule { }

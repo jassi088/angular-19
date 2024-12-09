@@ -1,1 +1,37 @@
-<p class="text-black text-lg">login works!</p>
+<div class="pt-4 px-4">
+  <form class="max-w-lg mx-auto space-y-4" [formGroup]="form">
+    <app-form-field [control]="form.get('email')" name="email">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="text"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
+        formControlName="email"
+        class="form-control"
+      />
+    </app-form-field>
+
+    <app-form-field [control]="form.get('password')" name="password">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Enter your password"
+        formControlName="password"
+        class="form-control"
+      />
+    </app-form-field>
+
+    <div class="text-center mt-5">
+      <button
+        type="submit"
+        (click)="onSubmit()"
+        class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

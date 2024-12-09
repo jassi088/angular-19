@@ -1,0 +1,22 @@
+<ng-content select=".form-label"></ng-content>
+
+<div class="flex items-center">
+  <div class="flex items-center">
+    <ng-content select=".form-prefix"></ng-content>
+  </div>
+
+  <div class="flex-1">
+    <ng-content select=".form-control"></ng-content>
+  </div>
+
+  <div class="flex items-center">
+    <ng-content select=".form-append"></ng-content>
+  </div>
+</div>
+
+<div
+  *ngIf="control?.touched && control?.invalid && error"
+  class="text-red-600 text-sm font-medium"
+>
+  {{ error }}
+</div>

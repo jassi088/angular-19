@@ -20,7 +20,7 @@ export class LoginGuard implements CanActivate {
     if (!this._localStorageService.token) {
       return true;
     }
-    this.router.navigate(['/admin/user']);
+    this.router.navigate(['dashboard']);
     return false;
   }
 }

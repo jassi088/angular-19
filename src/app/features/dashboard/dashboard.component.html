@@ -1,0 +1,32 @@
+<div class="flex flex-col justify-center items-center h-screen">
+  <p class="text-black">Dashboard works!</p>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <app-form-field [control]="form.get('hobbies')" name="hobbies">
+      <label for="hobbies" class="form-label">Select your hobbies</label>
+      <div class="form-control">
+        <app-multi-select
+          [options]="options"
+          [selectedValues]="selectedValues"
+          (selectedValuesChange)="onSelectionChange($event)"
+        ></app-multi-select>
+      </div>
+    </app-form-field>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+    >
+      Submit
+    </button>
+  </form>
+
+  <button
+    type="button"
+    class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+    (click)="logout()"
+  >
+    Logout
+  </button>
+</div>

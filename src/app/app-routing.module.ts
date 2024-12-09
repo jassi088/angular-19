@@ -12,9 +12,9 @@ export const routes: Routes = [
     canActivate: [LoginGuard],
   },
   {
-    path: 'admin',
+    path: 'dashboard',
     loadChildren: () =>
-      import('./features/main/main.module').then((m) => m.MainModule),
+      import('./features/dashboard/dashboard.module').then((m) => m.DashboardModule),
     canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: 'auth', pathMatch: 'full' },
