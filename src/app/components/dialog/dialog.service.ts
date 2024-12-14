@@ -12,7 +12,10 @@ import { DialogComponent } from './dialog.component';
 export class DialogService {
     private dialogContainerRef!: ComponentRef<DialogComponent>;
 
-    constructor(private injector: Injector, private appRef: ApplicationRef) { }
+    constructor(
+        private injector: Injector,
+        private appRef: ApplicationRef
+    ) { }
 
     open<T>(component: any, data?: any): Promise<T> {
         this.dialogContainerRef = this.createDialogContainer();
@@ -20,7 +23,19 @@ export class DialogService {
         const contentComponentRef = this.createContentComponent(component, data);
 
         return new Promise((resolve) => {
-            this.dialogContainerRef.instance.afterClosed.subscribe((result: T) => {
+            // Manually trigger change detection for the entire application
+            this.appRef.tick(); // This will trigger change detection for the application
+
+            // Now, after the dialog is rendered, append the content component inside the dialog
+            const dialogContentElement = this.dialogContainerRef.location.nativeElement.querySelector('.dialog-content');
+            if (dialogContentElement) {
+                dialogContentElement.appendChild(contentComponentRef.location.nativeElement); // Append the content inside dialog
+            } else {
+                throw new Error('Dialog content element not found.');
+            }
+
+            // Handle closing logic
+            contentComponentRef.instance.closed.subscribe((result: T) => {
                 this.destroyComponent(this.dialogContainerRef);
                 this.destroyComponent(contentComponentRef);
                 resolve(result); // Resolve when dialog closes
@@ -36,7 +51,7 @@ export class DialogService {
         this.appRef.attachView(dialogContainerRef.hostView);
         document.body.appendChild(dialogContainerRef.location.nativeElement);
 
-        (dialogContainerRef?.instance as any).open(); // Open the dialog container immediately
+        (dialogContainerRef?.instance as any).open(); // Open the dialog immediately
         return dialogContainerRef;
     }
 
@@ -45,13 +60,15 @@ export class DialogService {
             environmentInjector: this.appRef.injector,
         });
 
-        // Pass data to the content component
+        // Pass data to the content component if available
         const contentInstance = contentComponentRef.instance as any;
         if (data) {
-            Object.assign(contentInstance, data);
+            Object.assign(contentInstance, data); // Assign the data to the component instance
         }
 
+        // Attach the content component view to the application
         this.appRef.attachView(contentComponentRef.hostView);
+
         return contentComponentRef;
     }
 
