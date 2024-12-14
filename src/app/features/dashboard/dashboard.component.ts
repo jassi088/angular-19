@@ -19,25 +19,36 @@ export class DashboardComponent {
     { label: 'Sports', value: 'sports' },
     { label: 'Music', value: 'music' },
   ];
-  selectedValues: string[] = [];
 
-  onSelectionChange(selected: string[]) {
-    this.selectedValues = selected;
-    this.form.get('hobbies')?.setValue(selected);
+
+  menuOptions = [
+    { label: 'Profile', value: 'profile' },
+    { label: 'Settings', value: 'settings' },
+    { label: 'Logout', value: 'logout' }
+  ];
+
+  onMenuSelect(option: string) {
+    console.log('Selected Menu Item:', option);
   }
 
   constructor(private localStorageService: LocalStorageService, private router: Router) {
     this.form = new FormGroup({
-      hobbies: new FormControl(this.selectedValues, ValidatorsService.minLengthValidator(1)),
+      name: new FormControl('', ValidatorsService.required),
+      hobbies: new FormControl([], ValidatorsService.arrayMinLengthValidator(1)),
+      hobby: new FormControl('', ValidatorsService.selectRequired),
     });
   }
 
   onSubmit() {
     if (this.form.valid) {
-      console.log('Selected hobbies:', this.selectedValues);
-    } else {
       console.log(this.form.value);
+    } else {
+      this.form.markAllAsTouched()
     }
+  }
+
+  reset() {
+    this.form.reset()
   }
 
   logout() {

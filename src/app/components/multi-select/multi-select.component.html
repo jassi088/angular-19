@@ -1,15 +1,21 @@
-<div class="relative">
+<div class="relative multi-select-container">
   <button
     type="button"
-    class="bg-gray-200 px-4 py-2 rounded-md w-full"
+    class="rounded-md w-full"
     (click)="toggleDropdown()"
+    [class.opacity-50]="isDisabled"
+    [class.cursor-not-allowed]="isDisabled"
+    [disabled]="isDisabled"
   >
-    Select Options
+    <span *ngIf="selectedValues.length > 0; else placeholderText">
+      {{ selectedValues.join(", ") }}
+    </span>
+    <ng-template #placeholderText>{{ placeholder }}</ng-template>
   </button>
 
   <div
     *ngIf="isDropdownOpen"
-    class="absolute bg-white border shadow-lg mt-1 w-full z-10"
+    class="absolute bg-white border shadow-lg mt-3 w-full z-10"
   >
     <div *ngFor="let option of options" class="p-2">
       <label class="flex items-center">

@@ -1,0 +1,31 @@
+<div class="relative w-full select-option-container">
+  <button
+    type="button"
+    class="w-full rounded-md"
+    (click)="toggleDropdown()"
+    [disabled]="isDisabled"
+    [attr.aria-disabled]="isDisabled ? true : null"
+  >
+    {{ selectedOption?.label || "Select hobby" }}
+  </button>
+
+  <div
+    *ngIf="isDropdownOpen"
+    class="absolute bg-white border border-gray-300 shadow-lg mt-3 w-full z-10 rounded-md"
+  >
+    <ul class="max-h-48 overflow-y-auto">
+      <li
+        *ngFor="let option of options"
+        (click)="selectOption(option)"
+        (keydown)="onOptionKeydown($event, option)"
+        [class.cursor-pointer]="!isDisabled"
+        [class.opacity-50]="isDisabled"
+        class="px-4 py-2 hover:bg-blue-100 focus:bg-blue-100"
+        [attr.aria-disabled]="isDisabled ? true : null"
+        tabindex="0"
+      >
+        {{ option.label }}
+      </li>
+    </ul>
+  </div>
+</div>

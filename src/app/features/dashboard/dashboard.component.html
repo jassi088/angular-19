@@ -2,25 +2,83 @@
   <p class="text-black">Dashboard works!</p>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <app-form-field [control]="form.get('name')" name="name">
+      <label for="name" class="form-label">Name</label>
+      <div class="form-control">
+        <app-input-field
+          formControlName="name"
+          placeholder="Enter your name"
+          [type]="'text'"
+        ></app-input-field>
+      </div>
+    </app-form-field>
+
     <app-form-field [control]="form.get('hobbies')" name="hobbies">
       <label for="hobbies" class="form-label">Select your hobbies</label>
       <div class="form-control">
         <app-multi-select
+          placeholder="Select hobbies"
           [options]="options"
-          [selectedValues]="selectedValues"
-          (selectedValuesChange)="onSelectionChange($event)"
+          formControlName="hobbies"
         ></app-multi-select>
       </div>
     </app-form-field>
 
-    <!-- Submit Button -->
+    <app-form-field [control]="form.get('hobby')" name="hobby">
+      <label for="hobbies-select" class="form-label"
+        >Select Hobby (Single)</label
+      >
+      <div class="form-control">
+        <app-select-option
+          [options]="options"
+          formControlName="hobby"
+        ></app-select-option>
+      </div>
+    </app-form-field>
+
     <button
       type="submit"
       class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
     >
       Submit
     </button>
+    <button
+      (click)="reset()"
+      type="button"
+      class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+    >
+      Reset
+    </button>
   </form>
+
+  <app-menu
+    [menuItems]="menuOptions"
+    [triggerTemplate]="menuTrigger"
+    (menuSelect)="onMenuSelect($event)"
+  ></app-menu>
+
+  <ng-template #menuTrigger let-toggleMenu="toggleMenu">
+    <button
+      class="inline-flex justify-center rounded-full p-2 text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      (click)="toggleMenu()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="w-6 h-6"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
+        />
+      </svg>
+    </button>
+  </ng-template>
 
   <button
     type="button"

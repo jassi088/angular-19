@@ -46,8 +46,6 @@ export class ValidatorsService {
   }
 
   static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
-    console.log(validatorValue);
-
     const config: any = {
       required: `Please enter ${validatorValue.fieldName ? `${validatorValue.fieldName}` : ''
         }`,
@@ -101,6 +99,8 @@ export class ValidatorsService {
       otpLength: 'Fill the complete OTP to verify',
       NumberLength: 'Enter a valid phone number',
       oneSpecialCharacter: `Password must contain at least one special character.`,
+      arrayMinLength: `Minimum ${validatorValue.requiredLength || ''} ${validatorValue.requiredLength === 1 ? 'item is' : 'items are'} required.`,
+      arrayMaxLength: `Maximum ${validatorValue.requiredLength || ''} ${validatorValue.requiredLength === 1 ? 'item is' : 'items are'} allowed.`,
     };
     return config[validatorName];
   }
@@ -389,13 +389,39 @@ export class ValidatorsService {
     return null;
   }
 
-  static minLengthValidator(min = 1): ValidatorFn {
+  static arrayMinLengthValidator(min: number): ValidatorFn {
     return (control: AbstractControl) => {
-      if (control.value && control.value.length >= min) {
+      const value = control.value;
+
+      if (Array.isArray(value) && value.length >= min) {
         return null;
-      } else {
-        return { minLength: { requiredLength: min, actualLength: control.value ? control.value.length : 0 } };
       }
+
+      return {
+        arrayMinLength: {
+          requiredLength: min,
+          actualLength: Array.isArray(value) ? value.length : 0,
+        },
+      };
     };
   }
+
+  static arrayMaxLengthValidator(max: number): ValidatorFn {
+    return (control: AbstractControl) => {
+      const value = control.value;
+
+      if (Array.isArray(value) && value.length <= max) {
+        return null;
+      }
+
+      return {
+        arrayMaxLength: {
+          maxLength: max,
+          actualLength: Array.isArray(value) ? value.length : 0,
+        },
+      };
+    };
+  }
+
+
 }
