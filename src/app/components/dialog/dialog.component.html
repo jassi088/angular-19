@@ -1,0 +1,28 @@
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<div
+  *ngIf="isOpen"
+  class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50"
+  (click)="close(false)"
+>
+  <div
+    class="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg"
+    (click)="$event.stopPropagation()"
+    #dialog
+  >
+    <div class="flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-gray-800">Dialog Title</h2>
+      <button
+        (click)="close(false)"
+        class="text-xl font-semibold text-gray-600 hover:text-gray-800"
+        aria-label="Close dialog"
+      >
+        &times;
+      </button>
+    </div>
+
+    <div class="mt-4">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

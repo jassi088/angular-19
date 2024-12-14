@@ -7,24 +7,15 @@
     "
   ></ng-container>
 
-  <!-- Dropdown Menu -->
   <div
     *ngIf="isMenuOpen"
-    class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
+    class="min-w-40 origin-top-right absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
     role="menu"
     aria-orientation="vertical"
     tabindex="-1"
   >
-    <div class="py-1" role="none">
-      <ng-container *ngFor="let item of menuItems">
-        <button
-          (click)="selectMenuItem(item.value)"
-          class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 w-full text-left"
-          role="menuitem"
-        >
-          {{ item.label }}
-        </button>
-      </ng-container>
+    <div class="py-1" role="none" (click)="toggleMenu()">
+      <ng-content></ng-content>
     </div>
   </div>
 </div>

@@ -13,7 +13,7 @@
     *ngIf="isDropdownOpen"
     class="absolute bg-white border border-gray-300 shadow-lg mt-3 w-full z-10 rounded-md"
   >
-    <ul class="max-h-48 overflow-y-auto">
+    <ul class="max-h-48 overflow-y-auto scrollbar-none">
       <li
         *ngFor="let option of options"
         (click)="selectOption(option)"

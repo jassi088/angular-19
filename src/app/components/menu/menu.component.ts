@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, TemplateRef, ElementRef, Renderer2, OnDestroy } from '@angular/core';
+import { Component, Input, TemplateRef, ElementRef, Renderer2, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-menu',
@@ -7,9 +7,7 @@ import { Component, Input, Output, EventEmitter, TemplateRef, ElementRef, Render
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnDestroy {
-  @Input() menuItems: { label: string; value: string }[] = [];
   @Input() triggerTemplate!: TemplateRef<{ toggleMenu: () => void }>;
-  @Output() menuSelect = new EventEmitter<string>();
 
   isMenuOpen = false;
   private documentClickListener: () => void;
@@ -20,11 +18,6 @@ export class MenuComponent implements OnDestroy {
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-  }
-
-  selectMenuItem(item: string) {
-    this.menuSelect.emit(item);
-    this.isMenuOpen = false;
   }
 
   handleOutsideClick(event: MouseEvent) {

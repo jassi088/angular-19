@@ -12,14 +12,4 @@ export class UserService {
   constructor(public http: HttpClient) {
     this.users = new GenericApi<User>('users', http);
   }
-
-  async updateLocalUser() {
-    try {
-      const id = '';
-      const d = await this.users.get(id);
-      console.log(d);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 }

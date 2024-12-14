@@ -1,0 +1,22 @@
+<div>
+  <div class="flex border-b border-gray-200">
+    <ng-container *ngFor="let tab of tabs">
+      <button
+        class="px-4 py-2 text-sm font-medium focus:outline-none border-b-2"
+        [ngClass]="{
+          'text-blue-600 border-blue-600': tab.active,
+          'text-gray-500 border-transparent': !tab.active
+        }"
+        (click)="activateTab(tab)"
+      >
+        {{ tab.title }}
+      </button>
+    </ng-container>
+  </div>
+
+  <div *ngFor="let tab of tabs">
+    <div *ngIf="tab.active">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

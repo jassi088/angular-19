@@ -1,90 +1,156 @@
-<div class="flex flex-col justify-center items-center h-screen">
+<div class="flex flex-col justify-center items-center">
   <p class="text-black">Dashboard works!</p>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <app-form-field [control]="form.get('name')" name="name">
-      <label for="name" class="form-label">Name</label>
-      <div class="form-control">
-        <app-input-field
-          formControlName="name"
-          placeholder="Enter your name"
-          [type]="'text'"
-        ></app-input-field>
-      </div>
-    </app-form-field>
+  <!-- Form Section -->
+  <section class="w-full max-w-lg">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Form Section</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <!-- Name Field -->
+      <app-form-field [control]="form.get('name')" name="name">
+        <label for="name" class="form-label">Name</label>
+        <div class="form-control">
+          <app-input-field
+            formControlName="name"
+            placeholder="Enter your name"
+            [type]="'text'"
+          ></app-input-field>
+        </div>
+      </app-form-field>
 
-    <app-form-field [control]="form.get('hobbies')" name="hobbies">
-      <label for="hobbies" class="form-label">Select your hobbies</label>
-      <div class="form-control">
-        <app-multi-select
-          placeholder="Select hobbies"
-          [options]="options"
-          formControlName="hobbies"
-        ></app-multi-select>
-      </div>
-    </app-form-field>
+      <!-- Hobbies Field -->
+      <app-form-field [control]="form.get('hobbies')" name="hobbies">
+        <label for="hobbies" class="form-label">Select your hobbies</label>
+        <div class="form-control">
+          <app-multi-select
+            placeholder="Select hobbies"
+            [options]="options"
+            formControlName="hobbies"
+          ></app-multi-select>
+        </div>
+      </app-form-field>
 
-    <app-form-field [control]="form.get('hobby')" name="hobby">
-      <label for="hobbies-select" class="form-label"
-        >Select Hobby (Single)</label
-      >
-      <div class="form-control">
-        <app-select-option
-          [options]="options"
-          formControlName="hobby"
-        ></app-select-option>
-      </div>
-    </app-form-field>
+      <!-- Single Hobby Field -->
+      <app-form-field [control]="form.get('hobby')" name="hobby">
+        <label for="hobbies-select" class="form-label"
+          >Select Hobby (Single)</label
+        >
+        <div class="form-control">
+          <app-select-option
+            [options]="options"
+            formControlName="hobby"
+          ></app-select-option>
+        </div>
+      </app-form-field>
 
+      <!-- Buttons -->
+      <div class="mt-4 flex space-x-4">
+        <button
+          type="submit"
+          class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+        >
+          Submit
+        </button>
+        <button
+          (click)="reset()"
+          type="button"
+          class="px-6 py-2 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-600"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Menu Section -->
+  <section class="mt-8">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Menu Section</h2>
+    <app-menu [triggerTemplate]="menuTrigger">
+      <ng-template #menuTrigger let-toggleMenu="toggleMenu">
+        <button
+          class="inline-flex justify-center rounded-full p-2 text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          (click)="toggleMenu()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
+            />
+          </svg>
+        </button>
+      </ng-template>
+
+      <!-- Projected content -->
+      <ul>
+        <li
+          class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 w-full text-left cursor-pointer"
+          (click)="onMenuSelect('Profile')"
+          (keydown.enter)="onMenuSelect('Profile')"
+          (keydown.space)="onMenuSelect('Profile')"
+          tabindex="0"
+        >
+          Profile
+        </li>
+
+        <li
+          class="text-gray-700 block px-4 py-2 text-sm hover:bg-gray-100 w-full text-left cursor-pointer"
+          (click)="onMenuSelect('About')"
+          (keydown.enter)="onMenuSelect('About')"
+          (keydown.space)="onMenuSelect('About')"
+          tabindex="0"
+        >
+          About
+        </li>
+      </ul>
+    </app-menu>
+  </section>
+
+  <!-- Logout Section -->
+  <section class="mt-8">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Logout Section</h2>
     <button
-      type="submit"
-      class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
-    >
-      Submit
-    </button>
-    <button
-      (click)="reset()"
       type="button"
-      class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+      class="px-6 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600"
+      (click)="logout()"
     >
-      Reset
+      Logout
     </button>
-  </form>
+  </section>
 
-  <app-menu
-    [menuItems]="menuOptions"
-    [triggerTemplate]="menuTrigger"
-    (menuSelect)="onMenuSelect($event)"
-  ></app-menu>
+  <!-- Tabs -->
+  <section class="mt-4 p-6 bg-gray-100 rounded-lg shadow-md">
+    <h2 class="text-xl font-bold mb-4">Tabs</h2>
 
-  <ng-template #menuTrigger let-toggleMenu="toggleMenu">
-    <button
-      class="inline-flex justify-center rounded-full p-2 text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-      (click)="toggleMenu()"
+    <app-tabs
+      [activeTabTitle]="activeTab"
+      (activeTabChange)="onActiveTabChange($event)"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6"
-        aria-hidden="true"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M12 6.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 12.75a.75.75 0 110-1.5.75.75 0 010 1.5zM12 18.75a.75.75 0 110-1.5.75.75 0 010 1.5z"
-        />
-      </svg>
-    </button>
-  </ng-template>
+      <app-tab title="Overview">
+        <p>Welcome to the Overview section.</p>
+      </app-tab>
+      <app-tab title="Settings">
+        <p>Here you can change your settings.</p>
+      </app-tab>
+      <app-tab title="Activity">
+        <p>Here is your recent activity.</p>
+      </app-tab>
+    </app-tabs>
+
+    <p>Active Tab: {{ activeTab }}</p>
+  </section>
 
   <button
-    type="button"
-    class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
-    (click)="logout()"
+    (click)="openDialog()"
+    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
   >
-    Logout
+    Open Dialog
   </button>
 </div>
